@@ -1,222 +1,1143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>沾沾的百宝箱</title>
+<title>沾沾的自我介绍</title>
 <style>
+  :root {
+    --primary: #513796;
+    --secondary: #d9a4ca;
+    --light: #d7d3e4;
+    --dark: #2d2347;
+    --overlay: rgba(0, 0, 0, 0.5);
+    --transition: all 0.3s ease;
+  }
+  
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #513796, #d7d3e4, #d9a4ca);
+    background: linear-gradient(135deg, var(--dark), var(--primary), var(--secondary));
     color: white;
     overflow-x: hidden;
+    line-height: 1.6;
   }
+  
+  /* 汉堡菜单样式 */
   .navbar {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     background: rgba(0, 0, 0, 0.5);
-    padding: 10px 0;
+    padding: 15px 20px;
     position: sticky;
     top: 0;
     z-index: 1000;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   }
-  .navbar a {
+  
+  .logo {
+    font-weight: bold;
+    font-size: 1.2rem;
     color: white;
     text-decoration: none;
-    padding: 10px 20px;
-    margin: 0 10px;
-    border-radius: 5px;
-    transition: background 0.3s ease, transform 0.3s ease;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   }
-  .navbar a:hover {
-    background: rgba(255, 255, 255, 0.2);
+  
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 1001;
+    transition: transform 0.3s ease;
+  }
+  
+  .hamburger:hover {
     transform: scale(1.1);
   }
-  .container {
-    padding: 50px 20px;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+  
+  .hamburger span {
+    width: 100%;
+    height: 3px;
+    background: white;
+    border-radius: 3px;
+    transition: var(--transition);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
-
+  
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 250px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    padding: 80px 20px 20px;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+    z-index: 1000;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  .nav-links.active {
+    transform: translateX(0);
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    margin: 5px 0;
+    border-radius: 8px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .nav-links a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s;
+  }
+  
+  .nav-links a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .nav-links a:hover::before {
+    left: 100%;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
   .container a {
+    color: var(--light);
+    text-decoration: none;
+    transition: var(--transition);
+    position: relative;
+  }
+  
+  .container a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--secondary);
+    transition: width 0.3s ease;
+  }
+  
+  .container a:hover {
     color: white;
   }
-
+  
+  .container a:hover::after {
+    width: 100%;
+  }
+  
   .container.active {
     opacity: 1;
     transform: translateY(0);
   }
+  
+  .section-title {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow {
+    from { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+    to { text-shadow: 0 0 20px rgba(217, 164, 202, 0.7), 0 0 30px rgba(217, 164, 202, 0.5); }
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 60px;
+    height: 3px;
+    background: var(--secondary);
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(217, 164, 202, 0.5);
+  }
+  
   .project {
     margin-bottom: 40px;
-    padding: 20px;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 30px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
+  
   .project:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transform: translateY(-10px) scale(1.01);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.12);
   }
-  .project img {
-    width: 100%;
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-  }
-  .project img:hover {
-    transform: scale(1.05);
-  }
+  
   .footer {
     background: rgba(0, 0, 0, 0.7);
     color: white;
     text-align: center;
-    padding: 20px;
+    padding: 30px;
     position: relative;
-    margin-top: 50px;
+    margin-top: 80px;
     animation: fadeIn 1s ease forwards;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
+  
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
   }
+  
   .footer:hover {
     background: rgba(0, 0, 0, 0.8);
   }
+  
   .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
   }
+  
+  .modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
   .modal-content {
     background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     text-align: center;
+    width: 90%;
+    max-width: 500px;
+    transform: translateY(20px) scale(0.95);
+    transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
+  
+  .modal-overlay.active .modal-content {
+    transform: translateY(0) scale(1);
+  }
+  
   .modal-content input {
-    padding: 10px;
-    margin: 10px 0;
+    padding: 12px 15px;
+    margin: 15px 0;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     width: 80%;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid transparent;
+    transition: var(--transition);
   }
+  
+  .modal-content input:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 10px rgba(217, 164, 202, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
   .modal-content button {
-    padding: 10px 20px;
+    padding: 12px 25px;
     border: none;
-    border-radius: 5px;
-    background: #513796;
+    border-radius: 8px;
+    background: var(--primary);
     color: white;
     cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition);
+    margin: 10px 5px;
+    position: relative;
+    overflow: hidden;
   }
+  
+  .modal-content button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+  
   .modal-content button:hover {
     background: #412276;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   }
+  
+  .modal-content button:hover::before {
+    left: 100%;
+  }
+  
   .error-message {
     color: #ff6b6b;
     margin-top: 10px;
+    height: 20px;
+    animation: shake 0.5s ease;
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  
+  /* 新增样式：技能展示 */
+  .skills-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+  }
+  
+  .skill-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 10px;
+    transition: var(--transition);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--secondary), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+  
+  .skill-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .skill-card:hover::before {
+    transform: translateX(0);
+  }
+  
+  .skill-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--secondary);
+    text-shadow: 0 0 10px rgba(217, 164, 202, 0.3);
+    transition: transform 0.3s ease;
+  }
+  
+  .skill-card:hover .skill-icon {
+    transform: scale(1.1) rotate(5deg);
+  }
+  
+  /* 时间线样式 */
+  .timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 50px auto;
+  }
+  
+  .timeline::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    background: linear-gradient(to bottom, var(--primary), var(--secondary));
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(81, 55, 150, 0.5);
+  }
+  
+  .timeline-item {
+    padding: 10px 40px;
+    position: relative;
+    width: 50%;
+    box-sizing: border-box;
+    animation: slideIn 0.8s ease forwards;
+    opacity: 0;
+  }
+  
+  .timeline-item.left {
+    left: 0;
+    transform: translateX(-30px);
+  }
+  
+  .timeline-item.right {
+    left: 50%;
+    transform: translateX(30px);
+  }
+  
+  @keyframes slideIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border: 4px solid var(--secondary);
+    top: 20px;
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(217, 164, 202, 0.5);
+    transition: transform 0.3s ease;
+  }
+  
+  .timeline-item:hover::after {
+    transform: scale(1.2);
+  }
+  
+  .left::after {
+    right: -13px;
+  }
+  
+  .right::after {
+    left: -13px;
+  }
+  
+  .timeline-content {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .timeline-content:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* 问答游戏样式 */
+  .quiz-container {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .quiz-question {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .quiz-option {
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: left;
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .quiz-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--secondary);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .quiz-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+    border-color: rgba(217, 164, 202, 0.3);
+  }
+  
+  .quiz-option:hover::before {
+    transform: translateY(0);
+  }
+  
+  .quiz-option.correct {
+    background: rgba(76, 175, 80, 0.3);
+    border-color: rgba(76, 175, 80, 0.5);
+    animation: pulse 1s ease-in-out;
+  }
+  
+  .quiz-option.incorrect {
+    background: rgba(244, 67, 54, 0.3);
+    border-color: rgba(244, 67, 54, 0.5);
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; transform: scale(1.02); }
+  }
+  
+  .quiz-feedback {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--secondary);
+  }
+  
+  .quiz-next {
+    margin-top: 20px;
+    display: none;
+    padding: 10px 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .quiz-next:hover {
+    background: #412276;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .quiz-results {
+    text-align: center;
+    padding: 20px;
+    display: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    animation: fadeInUp 0.8s ease forwards;
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* 性格测试样式 */
+  .personality-test {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .test-question {
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  .test-options {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .test-option {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .test-option::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--secondary);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .test-option:hover, .test-option.selected {
+    background: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-color: var(--secondary);
+  }
+  
+  .test-option:hover::after, .test-option.selected::after {
+    transform: translateX(0);
+  }
+  
+  .test-result {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    display: none;
+    animation: fadeInUp 0.8s ease forwards;
+    border-left: 4px solid var(--secondary);
+  }
+  
+  /* 按钮通用动效 */
+  .btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  .btn:hover {
+    background: #412276;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn:hover::before {
+    left: 100%;
+  }
+  
+  /* 响应式调整 */
+  @media screen and (max-width: 768px) {
+    .timeline::after {
+      left: 31px;
+    }
+    
+    .timeline-item {
+      width: 100%;
+      padding-left: 70px;
+      padding-right: 25px;
+    }
+    
+    .left::after, .right::after {
+      left: 18px;
+    }
+    
+    .right {
+      left: 0%;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+    }
+    
+    .skills-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media screen and (min-width: 769px) {
+    .hamburger {
+      display: none;
+    }
+    
+    .nav-links {
+      position: static;
+      height: auto;
+      width: auto;
+      background: transparent;
+      flex-direction: row;
+      padding: 0;
+      transform: translateX(0);
+      box-shadow: none;
+    }
+    
+    .nav-links a {
+      padding: 8px 15px;
+      margin: 0 5px;
+    }
+    
+    .nav-links a:hover {
+      transform: translateY(-3px);
+      background: transparent;
+    }
   }
 </style>
 </head>
 <body>
 
 <div class="navbar">
-  <a href="#welcome">首页</a>
-  <a href="#projects">百宝箱</a>
-  <a href="#contact">更多</a>
+  <a href="#welcome" class="logo">沾沾的自我介绍</a>
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="nav-links" id="nav-links">
+    <a href="#welcome">首页</a>
+    <a href="#about">关于我</a>
+    <a href="#skills">技能</a>
+    <a href="#experience">经历</a>
+    <a href="#projects">百宝箱</a>
+    <a href="#interactive">互动</a>
+    <a href="#contact">更多</a>
+  </div>
 </div>
 
 <div class="container active" id="welcome">
-  <h1> 老师，你也在学数媒技吗？</h1>
-  <br>
-  <ul>
-    <li>如果你也知道我吃的都是烫圈美帝那你也会觉得我命好😌</li>
-    <br>
-    <li>高情商兴趣广泛精力强，低情商ADHD三分钟热度患者🤗</li>
-    <br>
-    <li>反正生命都是要化为尘埃的，开心一点怎么了😇</li>
-  </ul>
+  <h1 class="section-title">沾沾的自我介绍</h1>
+  <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+    <h2>老师，你也在学数媒技吗？</h2>
+    <p style="font-size: 1.1rem; margin: 20px 0; line-height: 1.8;">
+      欢迎来到沾的个人空间！
+      我是一个对世界充满好奇的新鲜事物爱好者，死宅和现充集于一身的女大学生，
+      希望通过这个百宝箱和你分享关于我的故事，也期待认识更多志同道合的你们 ^^
+    </p>
+    <div style="margin-top: 30px;">
+      <a href="#about" class="btn">
+        了解更多 →
+      </a>
+    </div>
+  </div>
 </div>
 
-<div class="container active" id="projects">
-  <h2>📦百宝箱</h2>
+<div class="container" id="about">
+  <h2 class="section-title">关于我</h2>
   <div class="project">
-    <h3>🗂️属性表</h3>
-    <p>树莓季大三 | IDL新媒体组 | 设计 | 摄影 | 三渲二 | ENTP</p>
+    <h3>📝 个人简介</h3>
+    <p>树莓季大三学生，IDL格物创新设计实验室成员，热衷于设计、摄影、动漫和辩论。ENTP一枚。</p>
+  </div>
+  
+  <div class="project">
+    <h3>🎭 我的多重身份</h3>
+    <ul style="padding-left: 20px; line-height: 1.8;">
+      <li><b>爱吃百家饭的同人女：</b>如果你也知道我吃的都是烫圈美帝那你也会觉得我命好😌</li>
+      <li><b>兴趣很广泛的杂杂人：</b>高情商兴趣广泛精力强，低情商ADHD三分钟热度患者🤗</li>
+      <li><b>梦想是做摆烂的咸鱼：</b>反正生命都是要化为尘埃的，开心一点怎么了😇</li>
+      <li><b>御影玲王全肯定：</b>💜 御影玲王 💜 世界上最好的宝宝</li>
+    </ul>
+  </div>
+  
+  <div class="project">
+    <h3>🌟 碎碎念</h3>
+    <p>创意没有边界，思辨没有标准答案。无论是在创作中，还是在辩论场上的交锋里，我都追求真实、有趣和有意义的表达。当我在说真话的时候，我感到自由。</p>
+  </div>
+</div>
+
+<div class="container" id="skills">
+  <h2 class="section-title">我的技能与爱好</h2>
+  <p>在学习和实践中不断积累的技能，有些已经相对熟练，有些还在努力提升中：</p>
+  
+  <div class="skills-container">
+    <div class="skill-card">
+      <div class="skill-icon">🎨</div>
+      <h3>设计能力</h3>
+      <p>UI/UX设计、平面设计、视觉创意，熟悉AI、PS等工具</p>
+    </div>
+    
+    <div class="skill-card">
+      <div class="skill-icon">📸</div>
+      <h3>摄影摄像</h3>
+      <p>人像摄影、风景摄影、短视频拍摄与剪辑，擅长人像后期与调色</p>
+    </div>
+    
+    <div class="skill-card">
+      <div class="skill-icon">💻</div>
+      <h3>前端开发</h3>
+      <p>HTML、CSS、JavaScript，能够开发简单的交互网页</p>
+    </div>
+    
+    <div class="skill-card">
+      <div class="skill-icon">🎮</div>
+      <h3>三渲二</h3>
+      <p>第一部番是幼儿园看的真珠美人鱼，喜欢二次元相关内容，偶尔会进行同人创作</p>
+    </div>
+    
+    <div class="skill-card">
+      <div class="skill-icon">🎵</div>
+      <h3>音乐爱好</h3>
+      <p>喜欢R&B，会弹一点吉他和钢琴，有时候会发布一些弹唱视频</p>
+    </div>
+    
+    <div class="skill-card">
+      <div class="skill-icon">🗣️</div>
+      <h3>辩论能力</h3>
+      <p>曾经代表湖南工业大学带队参加湖南省高校大学生辩论联赛，该届赛事的湖南工业大学最佳辩手积分榜第一。</p>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="experience">
+  <h2 class="section-title">我的经历</h2>
+  
+  <div class="timeline">
+    <div class="timeline-item left">
+      <div class="timeline-content">
+        <h3>初中时期</h3>
+        <h4>英语协会与志愿者协会主席</h4>
+        <p>管理几十至上百人的协会，担任两年重点班班长，初步锻炼自己的管理经验</p>
+      </div>
+    </div>
+    
+    <div class="timeline-item right">
+      <div class="timeline-content">
+        <h3>高中时期</h3>
+        <h4>担任FancyFree英语协会主席，创办了0ATM工作室</h4>
+        <p>作为会长举办超过200+人的大型活动，协办过N场活动，负责策划，摄影，设计等</p>
+      </div>
+    </div>
+    
+    <div class="timeline-item left">
+      <div class="timeline-content">
+        <h3>2022年</h3>
+        <h4>商学院录取，加入院辩论队和校学生会</h4>
+        <p>参加辩论赛获得最佳辩手，参加商赛获得全国高校商业精英挑战赛国家二等奖</p>
+      </div>
+    </div>
+    
+    <div class="timeline-item right">
+      <div class="timeline-content">
+        <h3>2023年</h3>
+        <h4>加入校辩论队，带队参加省级辩论联赛，打竞赛</h4>
+        <p>成功加入校辩队后带队参加不少网辩赛事，获得全国高校商业精英挑战赛国家一等奖和互联网+省级一等奖等</p>
+      </div>
+    </div>
+    
+    <div class="timeline-item left">
+      <div class="timeline-content">
+        <h3>2024年</h3>
+        <h4>转专业，加入网辩队</h4>
+        <p>专业第二的成绩转出商学院录入数字媒体技术专业，并成功通过麦克斯韦妖网辩队面试</p>
+      </div>
+    </div>
+    
+    <div class="timeline-item right">
+      <div class="timeline-content">
+        <h3>2025年至今</h3>
+        <h4>专注个人兴趣与能力提升</h4>
+        <p>在设计、摄影、动漫等领域持续深耕，不定期分享碎碎念中</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="projects">
+  <h2 class="section-title">📦 百宝箱</h2>
+  
+  <div class="project">
+    <h3>🗂️ 属性表</h3>
+    <p>树莓季大三 | IDL新媒体组 | 设计 | 摄影 | 动漫 | 辩论 | 音乐 | ENTP</p>
     <p>💜<b>御影玲王</b>💜全肯定</p>
   </div>
+  
   <div class="project">
-    <h3>🖥️作品库</h3>
+    <h3>🖥️ 作品库</h3>
     <p>🎞️ 个人项目全纪录 🎞️</p>
-    <a href="#" id="protected-link" >点击了解沾📩</a>
+    <p>收录了沾沾在设计、摄影、辩论等领域的相关作品和经历，包含设计作品、摄影合集、推文运营等内容，点击下方链接即可查看更多～</p>
+    <a href="#" id="protected-link" class="btn" style="margin-top: 15px; display: inline-block;">点击了解更多作品 📩</a>
+  </div>
+  
+  <div class="project">
+    <h3>📝 创作与思辨随笔</h3>
+    <p>记录创作过程中的想法、辩论中的感悟以及日常的碎碎念</p>
+    <ul style="padding-left: 20px; line-height: 1.8;">
+      <li><a href="#">设计中的视觉表达：如何用画面氛围感传递情绪</a></li>
+      <li><a href="#">辩论复盘：那些在赛场上学到的逻辑思维技巧</a></li>
+      <li><a href="#">动漫分析：柯南主线中隐藏的小细节</a></li>
+      <li><a href="#">弹唱日常：华语英文日语歌曲弹唱</a></li>
+    </ul>
   </div>
 </div>
 
-<div class="container active" id="contact">
-  <h2>📩Know more</h2>
-  <a href="https://pome.vip/w6GU6Qk2" target="_blank">🔮提问箱入口</a>
-  <p>公众号：沾沾的百宝箱</p>
-  <a href="https://mp.weixin.qq.com/s/1-Ooyz1WwhmxsQhC1_CO7w" target="_blank">点击进入沾的公众号</a>
+<div class="container" id="interactive">
+  <h2 class="section-title">互动区</h2>
+  
+  <div class="project">
+    <h3>❓ 关于我的小测验</h3>
+    <p>你对我了解多少？来测试一下吧！</p>
+    
+    <div class="quiz-container">
+      <div id="quiz-question" class="quiz-question">问题1：我最喜欢的动漫角色是谁？</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-correct="false">A. 罗小黑</div>
+        <div class="quiz-option" data-correct="true">B. 御影玲王</div>
+        <div class="quiz-option" data-correct="false">C. 炭治郎</div>
+        <div class="quiz-option" data-correct="false">D. 工藤新一</div>
+      </div>
+      <div id="quiz-feedback" class="quiz-feedback"></div>
+      <button id="quiz-next" class="btn quiz-next">下一题</button>
+      
+      <div id="quiz-results" class="quiz-results">
+        <h3>你的得分：<span id="quiz-score">0</span>/5</h3>
+        <p id="quiz-comment"></p>
+        <button id="quiz-restart" class="btn">再玩一次</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="project">
+    <h3>🔮 性格匹配度测试</h3>
+    <p>看看你和我的性格匹配度有多高？快来试试吧～</p>
+    <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px;">（寻找一个有缘人）</p>
+    
+    <div class="personality-test">
+      <div class="test-question">1. 周末你更喜欢？</div>
+      <div class="test-options">
+        <div class="test-option" data-value="1">宅在家里看书或追剧</div>
+        <div class="test-option" data-value="2">和朋友出去探索新地方</div>
+      </div>
+      
+      <div class="test-question">2. 做决定时，你更依赖？</div>
+      <div class="test-options">
+        <div class="test-option" data-value="1">理性分析</div>
+        <div class="test-option" data-value="2">直觉和感受</div>
+      </div>
+      
+      <div class="test-question">3. 对于新事物，你的态度是？</div>
+      <div class="test-options">
+        <div class="test-option" data-value="1">谨慎尝试，先观察</div>
+        <div class="test-option" data-value="2">充满好奇，立刻尝试</div>
+      </div>
+      
+      <div class="test-question">4. 你更擅长？</div>
+      <div class="test-options">
+        <div class="test-option" data-value="1">专注完成一件事</div>
+        <div class="test-option" data-value="2">同时处理多个任务</div>
+      </div>
+      
+      <div style="text-align: center;">
+        <button id="test-submit" class="btn">查看匹配度</button>
+      </div>
+      
+      <div id="test-result" class="test-result">
+        <h3>你的性格与我匹配度：<span id="match-score">0%</span></h3>
+        <p id="match-description"></p>
+        <button id="test-restart" class="btn">重新测试</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="contact">
+  <h2 class="section-title">📩 联系我</h2>
+  <p>如果你想和我交流、合作，或者有任何问题，欢迎通过以下方式联系沾：</p>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;">
+    <div class="project">
+      <h3>提问箱</h3>
+      <a href="https://pome.vip/w6GU6Qk2" target="_blank" style="display: block; margin: 10px 0;">🔮 点击进入我的提问箱</a>
+      <p>有任何想知道的问题，都可以在这里问我哦~</p>
+    </div>
+    
+    <div class="project">
+      <h3>公众号</h3>
+      <p>公众号：沾沾的自我介绍</p>
+      <a href="https://mp.weixin.qq.com/s/1-Ooyz1WwhmxsQhC1_CO7w" target="_blank" style="display: block; margin: 10px 0;">点击进入我的公众号</a>
+      <p>不定期分享我的作品、ploooooog和碎碎念</p>
+    </div>
+    
+    <div class="project">
+      <h3>其他平台</h3>
+      <p>微信：<a href="#">xixi811683448</a></p>
+      <p>微博：<a href="#">@这个一个不可言说的秘密</a></p>
+      <p>邮箱：<a href="mailto:example@mail.com">3261752842@qq.com</a></p>
+    </div>
+  </div>
 </div>
 
 <div class="footer">
   <p>版权所有 © 2024 UriyaNikos</p>
+  <p style="margin-top: 10px; opacity: 0.8;">感谢你的访问，愿我们都能在热爱的世界里闪闪发光✨</p>
 </div>
 
-<div id="password-modal" class="modal-overlay" style="display: none;">
+<div id="password-modal" class="modal-overlay">
   <div class="modal-content">
     <h2>请输入密码</h2>
     <input type="password" id="password-input" placeholder="密码">
-    <button id="submit-password">提交</button>
+    <button id="submit-password" class="btn">提交</button>
+    <button id="close-password" class="btn" style="background: rgba(255, 255, 255, 0.1);">取消</button>
     <p id="error-message" class="error-message"></p>
   </div>
 </div>
 
 <script>
+  // 汉堡菜单交互（新增动效）
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('nav-links');
+  
+  hamburger.addEventListener('click', function() {
+    navLinks.classList.toggle('active');
+    // 汉堡按钮动画（变成叉号）
+    hamburger.classList.toggle('active');
+    if (hamburger.classList.contains('active')) {
+      hamburger.children[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+      hamburger.children[1].style.opacity = '0';
+      hamburger.children[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+    } else {
+      hamburger.children[0].style.transform = 'rotate(0) translate(0, 0)';
+      hamburger.children[1].style.opacity = '1';
+      hamburger.children[2].style.transform = 'rotate(0) translate(0, 0)';
+    }
+  });
+  
+  // 点击导航链接关闭菜单
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', function() {
+      navLinks.classList.remove('active');
+      hamburger.classList.remove('active');
+      hamburger.children[0].style.transform = 'rotate(0) translate(0, 0)';
+      hamburger.children[1].style.opacity = '1';
+      hamburger.children[2].style.transform = 'rotate(0) translate(0, 0)';
+    });
+  });
+
+  // 滚动显示动画（优化动效，增加时间线延迟动画）
   document.addEventListener('DOMContentLoaded', function() {
     const containers = document.querySelectorAll('.container');
+    const timelineItems = document.querySelectorAll('.timeline-item');
 
     function activateContainer(container) {
       container.classList.add('active');
     }
 
     function handleScroll() {
+      // 容器滚动动画
       containers.forEach(container => {
         const rect = container.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+        if (rect.top < window.innerHeight * 0.8 && rect.bottom >= 0) {
           activateContainer(container);
+        }
+      });
+
+      // 时间线item延迟动画
+      timelineItems.forEach((item, index) => {
+        const rect = item.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.85 && rect.bottom >= 0) {
+          setTimeout(() => {
+            item.style.opacity = '1';
+            item.style.transform = 'translateX(0)';
+          }, index * 150); // 逐个延迟出现，更有层次感
         }
       });
     }
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+    handleScroll(); // 初始检查
+    
+    // 平滑滚动（保留原有功能）
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
   });
 
-  // 密码保护逻辑
+  // 密码保护逻辑（保留原有功能，新增输入动效）
   const protectedLink = document.getElementById('protected-link');
   const passwordModal = document.getElementById('password-modal');
   const passwordInput = document.getElementById('password-input');
   const submitButton = document.getElementById('submit-password');
+  const closeButton = document.getElementById('close-password');
   const errorMessage = document.getElementById('error-message');
 
-  // 设置正确的密码
   const correctPassword = "uriyanikos0802";
 
   protectedLink.addEventListener('click', function(event) {
     event.preventDefault();
-    passwordModal.style.display = 'flex';
+    passwordModal.classList.add('active');
+    // 输入框聚焦动画
+    setTimeout(() => {
+      passwordInput.focus();
+    }, 300);
+  });
+
+  closeButton.addEventListener('click', function() {
+    passwordModal.classList.remove('active');
+    passwordInput.value = '';
+    errorMessage.textContent = '';
   });
 
   submitButton.addEventListener('click', function() {
@@ -224,6 +1145,10 @@
       window.location.href = "https://zhanyuxi.my.canvasite.cn/kuailemoyuzhong";
     } else {
       errorMessage.textContent = "你不是沾沾本人哟！";
+      passwordInput.classList.add('error');
+      setTimeout(() => {
+        passwordInput.classList.remove('error');
+      }, 1000);
     }
   });
 
@@ -231,6 +1156,238 @@
     if (event.key === 'Enter') {
       submitButton.click();
     }
+  });
+  
+  // 点击模态框外部关闭
+  passwordModal.addEventListener('click', function(e) {
+    if (e.target === passwordModal) {
+      closeButton.click();
+    }
+  });
+  
+  // 问答游戏逻辑（新增选项点击动效）
+  const quizQuestions = [
+    {
+      question: "问题1：我最喜欢的动漫角色是谁？",
+      options: [
+        {text: "A. 罗小黑", correct: false},
+        {text: "B. 御影玲王", correct: true},
+        {text: "C. 炭治郎", correct: false},
+        {text: "D. 工藤新一", correct: false}
+      ],
+      feedback: "没错！你有仔细阅读我的主页哟～"
+    },
+    {
+      question: "问题2：我所在的专业是什么？",
+      options: [
+        {text: "A. 数字媒体技术", correct: true},
+        {text: "B. 计算机科学", correct: false},
+        {text: "C. 动画设计", correct: false},
+        {text: "D. 视觉传达", correct: false}
+      ],
+      feedback: "正确！我学习的是数字媒体技术专业"
+    },
+    {
+      question: "问题3：我加入了哪个组织？",
+      options: [
+        {text: "A. 文学社", correct: false},
+        {text: "B. IDL格物创新设计实验室", correct: true},
+        {text: "C. 摄影社", correct: false},
+        {text: "D. 动漫社", correct: false}
+      ],
+      feedback: "Yep，我是IDL新媒体组的成员"
+    },
+    {
+      question: "问题4：我喜欢的活动不包括以下哪项？",
+      options: [
+        {text: "A. 打辩论", correct: false},
+        {text: "B. 自弹自唱", correct: false},
+        {text: "C. 跳舞", correct: true},
+        {text: "D. 看动漫", correct: false}
+      ],
+      feedback: "正确答案是跳舞，我更喜欢动漫、辩论和音乐捏"
+    },
+    {
+      question: "问题5：我的性格类型是？",
+      options: [
+        {text: "A. INFP", correct: false},
+        {text: "B. ENTP", correct: true},
+        {text: "C. ISFJ", correct: false},
+        {text: "D. ESTJ", correct: false}
+      ],
+      feedback: "没错！我是ENTP！"
+    }
+  ];
+  
+  let currentQuestion = 0;
+  let quizScore = 0;
+  
+  const quizQuestionEl = document.getElementById('quiz-question');
+  const quizOptionsEl = document.querySelector('.quiz-options');
+  const quizFeedbackEl = document.getElementById('quiz-feedback');
+  const quizNextEl = document.getElementById('quiz-next');
+  const quizResultsEl = document.getElementById('quiz-results');
+  const quizScoreEl = document.getElementById('quiz-score');
+  const quizCommentEl = document.getElementById('quiz-comment');
+  const quizRestartEl = document.getElementById('quiz-restart');
+  
+  function loadQuestion(questionIndex) {
+    const question = quizQuestions[questionIndex];
+    quizQuestionEl.textContent = question.question;
+    
+    quizOptionsEl.innerHTML = '';
+    
+    question.options.forEach(option => {
+      const optionEl = document.createElement('div');
+      optionEl.className = 'quiz-option';
+      optionEl.textContent = option.text;
+      optionEl.dataset.correct = option.correct;
+      
+      optionEl.addEventListener('click', function() {
+        if (document.querySelector('.quiz-option.selected')) return;
+        
+        this.classList.add('selected');
+        
+        if (this.dataset.correct === 'true') {
+          this.classList.add('correct');
+          quizScore++;
+          quizFeedbackEl.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
+        } else {
+          this.classList.add('incorrect');
+          document.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+          quizFeedbackEl.style.backgroundColor = 'rgba(244, 67, 54, 0.2)';
+        }
+        
+        quizFeedbackEl.textContent = question.feedback;
+        quizFeedbackEl.style.display = 'block';
+        // 下一题按钮渐显动画
+        setTimeout(() => {
+          quizNextEl.style.display = 'inline-block';
+          quizNextEl.style.opacity = '1';
+        }, 500);
+      });
+      
+      quizOptionsEl.appendChild(optionEl);
+    });
+    
+    quizFeedbackEl.style.display = 'none';
+    quizNextEl.style.display = 'none';
+    quizNextEl.style.opacity = '0';
+  }
+  
+  quizNextEl.addEventListener('click', function() {
+    currentQuestion++;
+    
+    if (currentQuestion < quizQuestions.length) {
+      // 切换问题动画
+      quizOptionsEl.style.opacity = '0';
+      setTimeout(() => {
+        loadQuestion(currentQuestion);
+        quizOptionsEl.style.opacity = '1';
+      }, 300);
+    } else {
+      quizQuestionEl.style.display = 'none';
+      quizOptionsEl.style.display = 'none';
+      quizFeedbackEl.style.display = 'none';
+      quizNextEl.style.display = 'none';
+      
+      quizScoreEl.textContent = quizScore;
+      
+      if (quizScore === 5) {
+        quizCommentEl.textContent = "太棒了！你对我了如指掌，简直是知己啊！🎉";
+      } else if (quizScore >= 3) {
+        quizCommentEl.textContent = "很不错！你对我有一定的了解，继续加油哦～✨";
+      } else {
+        quizCommentEl.textContent = "看来你还需要多了解我一些呢，再试一次吧！😜";
+      }
+      
+      quizResultsEl.style.display = 'block';
+    }
+  });
+  
+  quizRestartEl.addEventListener('click', function() {
+    currentQuestion = 0;
+    quizScore = 0;
+    
+    quizQuestionEl.style.display = 'block';
+    quizOptionsEl.style.display = 'flex';
+    quizResultsEl.style.display = 'none';
+    
+    loadQuestion(currentQuestion);
+  });
+  
+  loadQuestion(currentQuestion);
+  
+  // 性格测试逻辑（核心修改：更新我的答案，新增提交/结果动效）
+  const testOptions = document.querySelectorAll('.test-option');
+  const testSubmit = document.getElementById('test-submit');
+  const testResult = document.getElementById('test-result');
+  const matchScore = document.getElementById('match-score');
+  const matchDescription = document.getElementById('match-description');
+  const testRestart = document.getElementById('test-restart');
+  
+  // 我的答案：宅家(1)、理性分析(1)、充满好奇(2)、同时处理多项任务(2)
+  const myAnswers = ['1', '1', '2', '2'];
+  
+  testOptions.forEach(option => {
+    option.addEventListener('click', function() {
+      const parentOptions = this.parentElement.querySelectorAll('.test-option');
+      parentOptions.forEach(opt => opt.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+  
+  testSubmit.addEventListener('click', function() {
+    const selectedOptions = document.querySelectorAll('.test-option.selected');
+    if (selectedOptions.length !== 4) {
+      alert('请回答所有问题哦～');
+      return;
+    }
+    
+    // 计算匹配度（逐题对比我的答案）
+    let score = 0;
+    selectedOptions.forEach((option, index) => {
+      if (option.dataset.value === myAnswers[index]) {
+        score += 25; // 每道题匹配得25分，满分100%
+      }
+    });
+    
+    // 结果显示动画
+    testResult.style.display = 'block';
+    setTimeout(() => {
+      matchScore.textContent = score + '%';
+      
+   
+      if (score === 100) {
+        matchDescription.textContent = "天呐！我们的性格简直一模一样！都是宅家但好奇、理性又高效的人，太有缘分了，一定要好好认识一下～🎉";
+      } else if (score >= 75) {
+        matchDescription.textContent = "我们的性格非常相似！都偏爱理性思考和新鲜事物，虽然偶尔节奏不同，但相信我们会有很多共同话题和兴趣爱好！✨";
+      } else if (score >= 50) {
+        matchDescription.textContent = "我们的性格有一定的相似性，你懂我的理性与好奇，我也能理解你的节奏，正好可以互相学习、彼此陪伴～😌";
+      } else if (score >= 25) {
+        matchDescription.textContent = "我们的性格差异有点大，但互补才更有趣呀！你喜欢的节奏我可以尝试，我热爱的事物也想分享给你，一起发现不一样的世界～🤗";
+      } else {
+        matchDescription.textContent = "我们的性格很不一样呢！不过不同的人之间也能碰撞出有趣的火花，希望你能通过这个小天地，多了解一点不一样的我哦～💖";
+      }
+    }, 300);
+  });
+  
+  testRestart.addEventListener('click', function() {
+    testOptions.forEach(option => option.classList.remove('selected'));
+    testResult.style.display = 'none';
+    matchScore.textContent = '0%';
+    matchDescription.textContent = '';
+  });
+  
+  // 新增页面加载动效：页面元素逐段渐显
+  window.addEventListener('load', function() {
+    const allSections = document.querySelectorAll('.container, .footer');
+    allSections.forEach((section, index) => {
+      setTimeout(() => {
+        section.style.opacity = '1';
+        section.style.transform = 'translateY(0)';
+      }, index * 200);
+    });
   });
 </script>
 
