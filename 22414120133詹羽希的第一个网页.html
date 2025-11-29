@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>沾沾的百宝箱</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #513796, #d7d3e4, #d9a4ca);
+    color: white;
+    overflow-x: hidden;
+  }
+  .navbar {
+    display: flex;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  .navbar a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+  .container {
+    padding: 50px 20px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .container a {
+    color: white;
+  }
+
+  .container.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .project {
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .project:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  }
+  .project img {
+    width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  .project img:hover {
+    transform: scale(1.05);
+  }
+  .footer {
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    margin-top: 50px;
+    animation: fadeIn 1s ease forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .footer:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .modal-content {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  .modal-content input {
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    width: 80%;
+  }
+  .modal-content button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #513796;
+    color: white;
+    cursor: pointer;
+  }
+  .modal-content button:hover {
+    background: #412276;
+  }
+  .error-message {
+    color: #ff6b6b;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="#welcome">首页</a>
+  <a href="#projects">百宝箱</a>
+  <a href="#contact">更多</a>
+</div>
+
+<div class="container active" id="welcome">
+  <h1> 老师，你也在学数媒技吗？</h1>
+  <br>
+  <ul>
+    <li><b>爱吃百家饭的同人女：</b>如果你也知道我吃的都是烫圈美帝那你也会觉得我命好😌</li>
+    <br>
+    <li><b>兴趣很广泛的杂杂人：</b>高情商兴趣广泛精力强，低情商ADHD三分钟热度患者🤗</li>
+    <br>
+    <li><b>梦想是做摆烂的咸鱼：</b>反正生命都是要化为尘埃的，开心一点怎么了😇</li>
+  </ul>
+</div>
+
+<div class="container active" id="projects">
+  <h2>📦百宝箱</h2>
+  <div class="project">
+    <h3>🗂️属性表</h3>
+    <p>树莓季大二 | IDL新媒体组 | 设计 | 摄影 | 三渲二 | ENTP</p>
+    <p>💜<b>御影玲王</b>💜全肯定</p>
+  </div>
+  <div class="project">
+    <h3>🖥️作品库</h3>
+    <p>🎞️ 个人项目全纪录 🎞️</p>
+    <a href="#" id="protected-link" >点击了解沾📩</a>
+  </div>
+</div>
+
+<div class="container active" id="contact">
+  <h2>📩Know more</h2>
+  <a href="https://pome.vip/w6GU6Qk2" target="_blank">🔮提问箱入口</a>
+  <p>公众号：沾沾的百宝箱</p>
+  <a href="https://mp.weixin.qq.com/s/1-Ooyz1WwhmxsQhC1_CO7w" target="_blank">点击进入沾的公众号</a>
+</div>
+
+<div class="footer">
+  <p>版权所有 © 2024 UriyaNikos</p>
+</div>
+
+<div id="password-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-content">
+    <h2>请输入密码</h2>
+    <input type="password" id="password-input" placeholder="密码">
+    <button id="submit-password">提交</button>
+    <p id="error-message" class="error-message"></p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const containers = document.querySelectorAll('.container');
+
+    function activateContainer(container) {
+      container.classList.add('active');
+    }
+
+    function handleScroll() {
+      containers.forEach(container => {
+        const rect = container.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+          activateContainer(container);
+        }
+      });
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+  });
+
+  // 密码保护逻辑
+  const protectedLink = document.getElementById('protected-link');
+  const passwordModal = document.getElementById('password-modal');
+  const passwordInput = document.getElementById('password-input');
+  const submitButton = document.getElementById('submit-password');
+  const errorMessage = document.getElementById('error-message');
+
+  // 设置正确的密码
+  const correctPassword = "uriyanikos0802";
+
+  protectedLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    passwordModal.style.display = 'flex';
+  });
+
+  submitButton.addEventListener('click', function() {
+    if (passwordInput.value === correctPassword) {
+      window.location.href = "https://zhanyuxi.my.canvasite.cn/kuailemoyuzhong";
+    } else {
+      errorMessage.textContent = "你不是沾沾本人哟！";
+    }
+  });
+
+  passwordInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      submitButton.click();
+    }
+  });
+</script>
+
+</body>
+</html>
