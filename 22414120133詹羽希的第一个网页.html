@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>沾沾的自我介绍</title>
+<title>沾沾的百宝箱</title>
 <style>
   :root {
     --primary: #513796;
@@ -1025,8 +1025,8 @@
 </div>
 
 <div class="footer">
-  <p>版权所有 © 2024 UriyaNikos</p>
-  <p style="margin-top: 10px; opacity: 0.8;">感谢你的访问，愿我们都能在热爱的世界里闪闪发光✨</p>
+  <p>版权所有 © 2025 UriyaNikos</p>
+  <p style="margin-top: 10px; opacity: 0.8;">喜欢您来，欢迎您来✨</p>
 </div>
 
 <div id="password-modal" class="modal-overlay">
@@ -1318,7 +1318,7 @@
   
   loadQuestion(currentQuestion);
   
-  // 性格测试逻辑（核心修改：更新我的答案，新增提交/结果动效）
+  // 性格测试逻辑
   const testOptions = document.querySelectorAll('.test-option');
   const testSubmit = document.getElementById('test-submit');
   const testResult = document.getElementById('test-result');
@@ -1344,7 +1344,7 @@
       return;
     }
     
-    // 计算匹配度（逐题对比我的答案）
+    // 计算匹配度
     let score = 0;
     selectedOptions.forEach((option, index) => {
       if (option.dataset.value === myAnswers[index]) {
@@ -1359,15 +1359,15 @@
       
    
       if (score === 100) {
-        matchDescription.textContent = "天呐！我们的性格简直一模一样！都是宅家但好奇、理性又高效的人，太有缘分了，一定要好好认识一下～🎉";
+        matchDescription.textContent = "OMG！我们的性格居然如此相近！有缘之🎉";
       } else if (score >= 75) {
-        matchDescription.textContent = "我们的性格非常相似！都偏爱理性思考和新鲜事物，虽然偶尔节奏不同，但相信我们会有很多共同话题和兴趣爱好！✨";
+        matchDescription.textContent = "我们的性格非常相似！都偏爱理性思考和新鲜事物，虽然偶尔节奏不同，但相信我们会有很多共同话题和兴趣爱好（嘻嘻）✨";
       } else if (score >= 50) {
-        matchDescription.textContent = "我们的性格有一定的相似性，你懂我的理性与好奇，我也能理解你的节奏，正好可以互相学习、彼此陪伴～😌";
+        matchDescription.textContent = "我们的性格有一定的相似性，你懂我的理性与好奇，我也能理解你的节奏，正好可以互相学习（嗯嗯）😌";
       } else if (score >= 25) {
-        matchDescription.textContent = "我们的性格差异有点大，但互补才更有趣呀！你喜欢的节奏我可以尝试，我热爱的事物也想分享给你，一起发现不一样的世界～🤗";
+        matchDescription.textContent = "我们的性格差异有点大，但互补才更有趣！！你喜欢的节奏我可以尝试，我热爱的事物也想分享给你，一起发现不一样的世界kkk🤗";
       } else {
-        matchDescription.textContent = "我们的性格很不一样呢！不过不同的人之间也能碰撞出有趣的火花，希望你能通过这个小天地，多了解一点不一样的我哦～💖";
+        matchDescription.textContent = "我们的性格很不一样呢！不过不同的人之间也能碰撞出有趣的火花捏💖";
       }
     }, 300);
   });
