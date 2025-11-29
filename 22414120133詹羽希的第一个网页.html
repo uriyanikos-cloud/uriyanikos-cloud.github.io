@@ -765,7 +765,7 @@
 
 <div class="container active" id="welcome">
   <h1 class="section-title">沾沾的自我介绍</h1>
-  <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+  <div style="max-width: 800px; margin: 0 auto; text-align: left;">
     <h2>老师，你也在学数媒技吗？</h2>
     <p style="font-size: 1.1rem; margin: 20px 0; line-height: 1.8;">
       欢迎来到沾的个人空间！
@@ -799,7 +799,7 @@
   
   <div class="project">
     <h3>🌟 碎碎念</h3>
-    <p>创意没有边界，思辨没有标准答案。无论是在创作中，还是在辩论场上的交锋里，我都追求真实、有趣和有意义的表达。当我在说真话的时候，我感到自由。</p>
+    <p>放下助人情结，尊重他人命运。当我在说真话的时候，我感到自由。</p>
   </div>
 </div>
 
@@ -911,7 +911,7 @@
   
   <div class="project">
     <h3>🖥️ 作品库</h3>
-    <p>🎞️ 个人项目全纪录 🎞️</p>
+    <p>🎞️ 个人项目不完全记录 🎞️</p>
     <p>收录了沾沾在设计、摄影、辩论等领域的相关作品和经历，包含设计作品、摄影合集、推文运营等内容，点击下方链接即可查看更多～</p>
     <a href="#" id="protected-link" class="btn" style="margin-top: 15px; display: inline-block;">点击了解更多作品 📩</a>
   </div>
@@ -921,9 +921,9 @@
     <p>记录创作过程中的想法、辩论中的感悟以及日常的碎碎念</p>
     <ul style="padding-left: 20px; line-height: 1.8;">
       <li><a href="#">设计中的视觉表达：如何用画面氛围感传递情绪</a></li>
-      <li><a href="#">辩论复盘：那些在赛场上学到的逻辑思维技巧</a></li>
+      <li><a href="#">辩论复盘：那些在交锋上学到的逻辑思维技巧</a></li>
       <li><a href="#">动漫分析：柯南主线中隐藏的小细节</a></li>
-      <li><a href="#">弹唱日常：华语英文日语歌曲弹唱</a></li>
+      <li><a href="#">红线变奏：Emotional Threads情感之线</a></li>
     </ul>
   </div>
 </div>
@@ -936,12 +936,12 @@
     <p>你对我了解多少？来测试一下吧！</p>
     
     <div class="quiz-container">
-      <div id="quiz-question" class="quiz-question">问题1：我最喜欢的动漫角色是谁？</div>
+      <div id="quiz-question" class="quiz-question">问题1：以下哪个是我的本命推？</div>
       <div class="quiz-options">
-        <div class="quiz-option" data-correct="false">A. 罗小黑</div>
+        <div class="quiz-option" data-correct="false">A. 天宫律舞</div>
         <div class="quiz-option" data-correct="true">B. 御影玲王</div>
-        <div class="quiz-option" data-correct="false">C. 炭治郎</div>
-        <div class="quiz-option" data-correct="false">D. 工藤新一</div>
+        <div class="quiz-option" data-correct="false">C. 亚斯塔</div>
+        <div class="quiz-option" data-correct="false">D. 进藤光</div>
       </div>
       <div id="quiz-feedback" class="quiz-feedback"></div>
       <button id="quiz-next" class="btn quiz-next">下一题</button>
@@ -956,7 +956,7 @@
   
   <div class="project">
     <h3>🔮 性格匹配度测试</h3>
-    <p>看看你和我的性格匹配度有多高？快来试试吧～</p>
+    <p>看看你和我的性格匹配度有多高？快来选选看QvQ</p>
     <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px;">（寻找一个有缘人）</p>
     
     <div class="personality-test">
@@ -999,13 +999,13 @@
 
 <div class="container" id="contact">
   <h2 class="section-title">📩 联系我</h2>
-  <p>如果你想和我交流、合作，或者有任何问题，欢迎通过以下方式联系沾：</p>
+  <p>如果你想和我交流、合作，或者有任何问题，欢迎通过以下方式联系：</p>
   
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;">
     <div class="project">
       <h3>提问箱</h3>
       <a href="https://pome.vip/w6GU6Qk2" target="_blank" style="display: block; margin: 10px 0;">🔮 点击进入我的提问箱</a>
-      <p>有任何想知道的问题，都可以在这里问我哦~</p>
+      <p>有任何想知道的问题，都可以在这里问我</p>
     </div>
     
     <div class="project">
@@ -1017,7 +1017,7 @@
     
     <div class="project">
       <h3>其他平台</h3>
-      <p>微信：<a href="#">xixi811683448</a></p>
+      <p>QQ：<a href="#">3261752842</a></p>
       <p>微博：<a href="#">@这个一个不可言说的秘密</a></p>
       <p>邮箱：<a href="mailto:example@mail.com">3261752842@qq.com</a></p>
     </div>
@@ -1040,13 +1040,13 @@
 </div>
 
 <script>
-  // 汉堡菜单交互（新增动效）
+  // 汉堡菜单交互
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('nav-links');
   
   hamburger.addEventListener('click', function() {
     navLinks.classList.toggle('active');
-    // 汉堡按钮动画（变成叉号）
+    // 汉堡按钮动画
     hamburger.classList.toggle('active');
     if (hamburger.classList.contains('active')) {
       hamburger.children[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
@@ -1070,7 +1070,7 @@
     });
   });
 
-  // 滚动显示动画（优化动效，增加时间线延迟动画）
+  // 滚动显示动画
   document.addEventListener('DOMContentLoaded', function() {
     const containers = document.querySelectorAll('.container');
     const timelineItems = document.querySelectorAll('.timeline-item');
@@ -1168,34 +1168,34 @@
   // 问答游戏逻辑（新增选项点击动效）
   const quizQuestions = [
     {
-      question: "问题1：我最喜欢的动漫角色是谁？",
+      question: "问题1：以下哪个是我的本命推？",
       options: [
-        {text: "A. 罗小黑", correct: false},
+        {text: "A. 天宫律舞", correct: false},
         {text: "B. 御影玲王", correct: true},
-        {text: "C. 炭治郎", correct: false},
-        {text: "D. 工藤新一", correct: false}
+        {text: "C. 亚斯塔", correct: false},
+        {text: "D. 进藤光", correct: false}
       ],
-      feedback: "没错！你有仔细阅读我的主页哟～"
+      feedback: "没错！看来你有仔细阅读我的主页^^"
     },
     {
-      question: "问题2：我所在的专业是什么？",
+      question: "问题2：我学的是什么专业？",
       options: [
         {text: "A. 数字媒体技术", correct: true},
-        {text: "B. 计算机科学", correct: false},
-        {text: "C. 动画设计", correct: false},
+        {text: "B. 计算机科学与技术", correct: false},
+        {text: "C. 国际商务", correct: false},
         {text: "D. 视觉传达", correct: false}
       ],
-      feedback: "正确！我学习的是数字媒体技术专业"
+      feedback: "正确！我学的确实是树莓季TvT"
     },
     {
-      question: "问题3：我加入了哪个组织？",
+      question: "问题3：我加入下面的了哪个组织？",
       options: [
-        {text: "A. 文学社", correct: false},
+        {text: "A. 滑板社", correct: false},
         {text: "B. IDL格物创新设计实验室", correct: true},
         {text: "C. 摄影社", correct: false},
         {text: "D. 动漫社", correct: false}
       ],
-      feedback: "Yep，我是IDL新媒体组的成员"
+      feedback: "Yep，我是IDL新媒体组滴"
     },
     {
       question: "问题4：我喜欢的活动不包括以下哪项？",
@@ -1205,7 +1205,7 @@
         {text: "C. 跳舞", correct: true},
         {text: "D. 看动漫", correct: false}
       ],
-      feedback: "正确答案是跳舞，我更喜欢动漫、辩论和音乐捏"
+      feedback: "我真的不会跳舞呃呃呃啊啊啊，驯服四肢中"
     },
     {
       question: "问题5：我的性格类型是？",
@@ -1215,7 +1215,7 @@
         {text: "C. ISFJ", correct: false},
         {text: "D. ESTJ", correct: false}
       ],
-      feedback: "没错！我是ENTP！"
+      feedback: "虽然是ENTP，但其实E和I、P和J的数值差别不大"
     }
   ];
   
@@ -1294,11 +1294,11 @@
       quizScoreEl.textContent = quizScore;
       
       if (quizScore === 5) {
-        quizCommentEl.textContent = "太棒了！你对我了如指掌，简直是知己啊！🎉";
+        quizCommentEl.textContent = "我嘞个豆！你对这个沾雨稀已经了如指掌了🎉";
       } else if (quizScore >= 3) {
-        quizCommentEl.textContent = "很不错！你对我有一定的了解，继续加油哦～✨";
+        quizCommentEl.textContent = "Goooooood！你还算了解我的嘛✨";
       } else {
-        quizCommentEl.textContent = "看来你还需要多了解我一些呢，再试一次吧！😜";
+        quizCommentEl.textContent = "纳尼！！我们难不成是陌生人吗，plz再试一次吧！😜";
       }
       
       quizResultsEl.style.display = 'block';
@@ -1340,7 +1340,7 @@
   testSubmit.addEventListener('click', function() {
     const selectedOptions = document.querySelectorAll('.test-option.selected');
     if (selectedOptions.length !== 4) {
-      alert('请回答所有问题哦～');
+      alert('请回答所有问题捏');
       return;
     }
     
