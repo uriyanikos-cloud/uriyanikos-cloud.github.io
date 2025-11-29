@@ -20,6 +20,13 @@
     --text-muted: #b3b3b3;
     --card-radius: 16px;
     --transition: cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* 新增的渐变色变量 (高级配色) */
+    --grad-1: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); /* 清新蓝 */
+    --grad-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); /* 绯红紫 */
+    --grad-3: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 深海紫 */
+    --grad-4: linear-gradient(135deg, #ffc371 0%, #ff5b1a 100%); /* 夕阳橙 */
+    --grad-5: linear-gradient(135deg, #16a085 0%, #f4d03f 100%); /* 森林绿金 */
   }
 
   * { box-sizing: border-box; outline: none; }
@@ -234,19 +241,66 @@
   
   .skill-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    perspective: 1000px; 
   }
   
+  .skill-container {
+    height: 150px;
+  }
+
   .skill-box {
     background: rgba(0,0,0,0.2);
     padding: 20px 10px;
     text-align: center;
     border-radius: 12px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  .skill-box.flipped {
+    transform: rotateY(180deg);
+  }
+
+  /* 翻转效果修复：确保正面和背面完全重合 */
+  .skill-front, .skill-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; 
+    left: 0;
+    backface-visibility: hidden; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 12px;
+    /* 继承外部的颜色或背景 */
+  }
+
+  .skill-front {
+    background: rgba(0,0,0,0.2);
     transition: 0.3s;
   }
-  .skill-box:hover { background: var(--primary); transform: scale(1.1) rotate(2deg); }
-  .skill-icon { font-size: 2rem; margin-bottom: 5px; display: block; }
+  .skill-front:hover {
+    background: var(--primary);
+  }
+
+  .skill-back {
+    background: var(--primary);
+    transform: rotateY(180deg);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .skill-icon { font-size: 2.5rem; margin-bottom: 5px; display: block; }
 
   /* ================= 经历 (时间轴) ================= */
   .timeline {
@@ -281,16 +335,17 @@
     display: block;
   }
 
-  /* ================= 游戏区 (Sandtris) ================= */
+  /* ================= 游戏区 (Sandtris & Quiz) ================= */
   .game-wrapper {
     width: 100%;
-    height: 600px;
+    height: 800px; 
     background: #000;
     border-radius: 20px;
     border: 2px solid var(--glass-border);
     position: relative;
     overflow: hidden;
     box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    margin-bottom: 40px; /* 增加间距 */
   }
   
   .game-overlay {
@@ -312,6 +367,68 @@
     height: 100%;
     border: none;
   }
+
+  /* 互动问答区域样式 - 修复选中状态问题 */
+  #quiz-area {
+    background: var(--glass);
+    padding: 30px;
+    border-radius: var(--card-radius);
+    border: 1px solid var(--glass-border);
+  }
+  .quiz-q {
+    font-size: 1.2rem;
+    color: var(--primary-glow);
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  .quiz-option {
+    display: flex; /* 确保label内部元素可以对齐 */
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid transparent; /* 确保选中和未选中状态的边框尺寸一致 */
+  }
+  /* 新增：选中时的样式 */
+  .quiz-option input[type="radio"]:checked + span {
+    color: var(--accent);
+    font-weight: bold;
+  }
+  .quiz-option:has(input[type="radio"]:checked) {
+    background: rgba(112, 69, 175, 0.3); /* primary color transparent background */
+    border: 1px solid var(--primary);
+  }
+  .quiz-option:hover {
+    background: var(--glass-hover);
+  }
+  .quiz-option input[type="radio"] {
+    margin-right: 10px;
+    /* 移除原来的 pointer-events: none; 让点击 radio 按钮也能触发 */
+    flex-shrink: 0; /* 防止 radio 按钮被挤压 */
+  }
+  .quiz-option span {
+    display: block;
+  }
+
+  .quiz-result {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+  }
+  .result-correct { background-color: #28a74550; color: #28a745; }
+  .result-wrong { background-color: #dc354550; color: #dc3545; }
+  .quiz-score {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--secondary);
+    margin-top: 30px;
+    text-align: right;
+  }
+
 
   /* ================= 便签墙 (Interactive) ================= */
   .memo-section {
@@ -353,6 +470,8 @@
   .color-picker {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
+    max-width: 200px;
   }
   
   .color-option {
@@ -362,13 +481,14 @@
     cursor: pointer;
     border: 2px solid transparent;
     transition: 0.2s;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
   }
   .color-option.active { transform: scale(1.2); border-color: white; }
 
   .memo-wall {
     min-height: 400px;
     background-image: radial-gradient(var(--glass-border) 1px, transparent 1px);
-    background-size: 20px 20px; /* 点阵背景 */
+    background-size: 20px 20px; 
     border-radius: 10px;
     position: relative;
     padding: 20px;
@@ -381,7 +501,7 @@
 
   .sticky-note {
     padding: 20px;
-    color: #333; /* 便签是亮色，字用深色 */
+    color: #333; 
     border-radius: 2px 2px 15px 2px;
     box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
     font-size: 1rem;
@@ -391,6 +511,7 @@
     flex-direction: column;
     justify-content: space-between;
     transition: transform 0.3s;
+    background-color: transparent; 
   }
   
   .sticky-note:hover { z-index: 100; transform: scale(1.05) !important; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
@@ -403,6 +524,10 @@
     border-style: solid;
     border-color: transparent transparent rgba(0,0,0,0.1) transparent; 
   }
+  .sticky-note[style*="linear-gradient"] {
+    color: white; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
 
   .note-date { font-size: 0.7rem; opacity: 0.6; margin-top: 10px; text-align: right; }
 
@@ -410,6 +535,57 @@
     from { opacity: 0; transform: scale(0.5); }
     to { opacity: 1; transform: scale(1); }
   }
+
+  /* ================= 联系我分区 (优化) ================= */
+  .contact-links {
+    display: flex;
+    flex-direction: column; /* 竖直排列 */
+    gap: 30px;
+    margin-top: 30px;
+    max-width: 800px; /* 限制宽度，使内容更集中 */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center; /* 垂直居中对齐 */
+    width: 100%;
+    gap: 20px;
+  }
+  .contact-item a {
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 15px 30px;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    transition: 0.3s;
+    display: block;
+    min-width: 200px; /* 固定按钮宽度 */
+    text-align: center;
+    flex-shrink: 0; /* 不允许被压缩 */
+  }
+  .contact-item a:hover {
+    background: var(--glass-hover);
+    color: white;
+    box-shadow: 0 0 15px var(--secondary);
+  }
+  /* 新增：右侧描述容器的毛玻璃效果 */
+  .contact-desc-box {
+    flex-grow: 1;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px 20px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .contact-desc {
+    margin: 0;
+  }
+
 
   /* ================= 底部 & 响应式 ================= */
   .footer {
@@ -425,20 +601,23 @@
     .grid-2 { grid-template-columns: 1fr; }
     .hero-content h1 { font-size: 2.5rem; }
     .navbar { width: 95%; padding: 10px 20px; }
-    .nav-menu { display: none; } /* 简化处理，移动端隐藏菜单 */
+    .nav-menu { display: none; }
     .hamburger { display: block; }
     .nav-menu.active { 
       display: flex; flex-direction: column; position: absolute; 
       top: 60px; right: 0; background: #1a1a2e; padding: 20px; width: 200px; border-radius: 10px; 
     }
+    .contact-item { flex-direction: column; align-items: stretch; } /* 移动端改为上下排列 */
+    .contact-item a { min-width: 100%; }
+    .contact-desc-box { width: 100%; }
   }
 
-  /* 密码弹窗样式 */
+  /* 密码弹窗样式: 确保初始隐藏 */
   .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.8); z-index: 10000;
     display: flex; justify-content: center; align-items: center;
-    opacity: 0; visibility: hidden; transition: 0.3s;
+    opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
   }
   .modal-overlay.active { opacity: 1; visibility: visible; }
   .modal-content {
@@ -457,6 +636,7 @@
     <a href="#skills">Skills</a>
     <a href="#projects">Gallery</a>
     <a href="#playground">Playground</a>
+    <a href="#contact">Contact</a>
     <a href="#interactive">Memo</a>
   </div>
 </div>
@@ -509,14 +689,44 @@
   
   <div class="grid-2">
     <div>
-      <h3 style="margin-bottom: 20px;">Skillset</h3>
+      <h3 style="margin-bottom: 20px;">Skillset (点击翻转查看)</h3>
       <div class="skill-grid">
-        <div class="skill-box"><span class="skill-icon">🎨</span>设计</div>
-        <div class="skill-box"><span class="skill-icon">📸</span>摄影</div>
-        <div class="skill-box"><span class="skill-icon">💻</span>网页</div>
-        <div class="skill-box"><span class="skill-icon">🎞️</span>后期</div>
-        <div class="skill-box"><span class="skill-icon">🗣️</span>辩论</div>
-        <div class="skill-box"><span class="skill-icon">🧠</span>策划</div>
+        <div class="skill-container">
+          <div class="skill-box" onclick="this.classList.toggle('flipped')">
+            <div class="skill-front"><span class="skill-icon">🎨</span>设计</div>
+            <div class="skill-back">熟练PS/AI/C4D/Blender等，专注于视觉传达、三渲二。</div>
+          </div>
+        </div>
+        <div class="skill-container">
+          <div class="skill-box" onclick="this.classList.toggle('flipped')">
+            <div class="skill-front"><span class="skill-icon">📸</span>摄影</div>
+            <div class="skill-back">主要拍摄Cosplay和静物。爱好后期调色，拥有一定的审美。</div>
+          </div>
+        </div>
+        <div class="skill-container">
+          <div class="skill-box" onclick="this.classList.toggle('flipped')">
+            <div class="skill-front"><span class="skill-icon">💻</span>网页</div>
+            <div class="skill-back">能手搓静态网页，熟悉HTML/CSS/JS基础，热衷于前端美化。</div>
+          </div>
+        </div>
+        <div class="skill-container">
+          <div class="skill-box" onclick="this.classList.toggle('flipped')">
+            <div class="skill-front"><span class="skill-icon">🎞️</span>后期</div>
+            <div class="skill-back">PR/AE基础，能进行简单的视频剪辑和特效制作。</div>
+          </div>
+        </div>
+        <div class="skill-container">
+          <div class="skill-box" onclick="this.classList.toggle('flipped')">
+            <div class="skill-front"><span class="skill-icon">🗣️</span>辩论</div>
+            <div class="skill-back">校队成员，擅长立论、攻辩。在逻辑和表达上有训练。</div>
+          </div>
+        </div>
+        <div class="skill-container">
+          <div class="skill-box" onclick="this.classList.toggle('flipped')">
+            <div class="skill-front"><span class="skill-icon">🧠</span>策划</div>
+            <div class="skill-back">活动、项目策划经验丰富，思路清晰，执行力强。</div>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -567,10 +777,47 @@
     </div>
     <div id="iframe-container" style="width:100%; height:100%;"></div>
   </div>
+
+  <h3 style="margin-top: 50px; margin-bottom: 30px; color: var(--accent);">🎮 沾沾小知识测验</h3>
+  <div id="quiz-area">
+    </div>
+</div>
+
+<div class="section" id="contact">
+    <h2 class="section-title">05. 联系我 Contact</h2>
+    <p style="text-align: center; max-width: 600px; margin: 0 auto 40px;">
+        欢迎通过以下方式找到我，一起交流设计、动漫、辩论、或任何有趣的奇思妙想！
+    </p>
+    <div class="contact-links">
+        <div class="contact-item">
+            <a href="https://mp.weixin.qq.com/s/1-Ooyz1WwhmxsQhC1_CO7w" target="_blank">
+                <span style="font-size: 1.5em; vertical-align: middle;">💬</span> 微信公众号
+            </a>
+            <div class="contact-desc-box">
+              <p class="contact-desc">分享长篇思考、设计教程、深度杂谈，内容相对严肃。</p>
+            </div>
+        </div>
+        <div class="contact-item">
+            <a href="https://pome.vip/w6GU6Qk2" target="_blank">
+                <span style="font-size: 1.5em; vertical-align: middle;">❓</span> 提问箱
+            </a>
+            <div class="contact-desc-box">
+              <p class="contact-desc">想匿名交流或随手问个问题？最方便的渠道！</p>
+            </div>
+        </div>
+        <div class="contact-item">
+            <a href="mailto:your.email@example.com" target="_blank">
+                <span style="font-size: 1.5em; vertical-align: middle;">📧</span> 邮件
+            </a>
+            <div class="contact-desc-box">
+              <p class="contact-desc">用于正式合作、约稿、或进行长邮件讨论的严肃途径。</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="section" id="interactive">
-  <h2 class="section-title">05. 留下你的碎片</h2>
+  <h2 class="section-title">06. 留下你的碎片</h2>
   <p>在沾的百宝箱里贴一张便签吧，随便说什么都行。<br><span style="font-size:0.8rem; opacity:0.6;">(注：你的便签会保存在你的浏览器缓存里，刷新不会消失哦，但也只有你能看见，就像写给自己的秘密~✨)</span></p>
 
   <div class="memo-section">
@@ -585,6 +832,11 @@
           <div class="color-option" style="background:#ff7eb3;" data-color="#ff7eb3"></div>
           <div class="color-option" style="background:#7afcff;" data-color="#7afcff"></div>
           <div class="color-option" style="background:#ce94ff;" data-color="#ce94ff"></div>
+          <div class="color-option" style="background:var(--grad-1);" data-color="var(--grad-1)"></div>
+          <div class="color-option" style="background:var(--grad-2);" data-color="var(--grad-2)"></div>
+          <div class="color-option" style="background:var(--grad-3);" data-color="var(--grad-3)"></div>
+          <div class="color-option" style="background:var(--grad-4);" data-color="var(--grad-4)"></div>
+          <div class="color-option" style="background:var(--grad-5);" data-color="var(--grad-5)"></div>
         </div>
         <button class="btn-main" id="add-memo-btn" style="padding: 8px 20px; font-size: 0.9rem;">贴上墙 📌</button>
       </div>
@@ -599,13 +851,10 @@
   </div>
 </div>
 
+
 <div class="footer">
   <p>Designed & Coded by UriyaNikos © 2025</p>
   <p>Powered by Passion & Milk Tea 🧋</p>
-  <div style="margin-top: 10px;">
-    <a href="https://mp.weixin.qq.com/s/1-Ooyz1WwhmxsQhC1_CO7w" target="_blank" style="color: var(--secondary); text-decoration: none; margin: 0 10px;">公众号</a>
-    <a href="https://pome.vip/w6GU6Qk2" target="_blank" style="color: var(--secondary); text-decoration: none; margin: 0 10px;">提问箱</a>
-  </div>
 </div>
 
 <div id="password-modal" class="modal-overlay">
@@ -638,16 +887,15 @@
     navMenu.classList.toggle('active');
   });
 
-  // 3. 游戏加载逻辑 (避免iframe抢占焦点和拖慢加载)
+  // 3. 游戏加载逻辑
   function loadGame() {
     const container = document.getElementById('iframe-container');
     const overlay = document.getElementById('game-overlay');
     
-    // 创建iframe
     const iframe = document.createElement('iframe');
     iframe.src = "https://sandtris.com/";
     iframe.className = "game-frame";
-    iframe.allow = "autoplay"; // 允许游戏声音
+    iframe.allow = "autoplay";
     
     container.appendChild(iframe);
     overlay.classList.add('hidden');
@@ -660,7 +908,6 @@
   const colorOptions = document.querySelectorAll('.color-option');
   let selectedColor = '#fff740';
 
-  // 颜色选择
   colorOptions.forEach(opt => {
     opt.addEventListener('click', () => {
       colorOptions.forEach(o => o.classList.remove('active'));
@@ -669,17 +916,14 @@
     });
   });
 
-  // 加载本地存储的便签
-  function loadMemos() {
-    const savedMemos = JSON.parse(localStorage.getItem('uriyas_memos') || '[]');
-    savedMemos.forEach(memo => createMemoElement(memo.text, memo.color, memo.date, memo.rot));
-  }
-
-  // 创建便签DOM
   function createMemoElement(text, color, date, rot) {
     const note = document.createElement('div');
     note.className = 'sticky-note';
-    note.style.backgroundColor = color;
+    if (color.startsWith('var(') && color.includes('grad')) {
+        note.style.background = color;
+    } else {
+        note.style.backgroundColor = color;
+    }
     note.style.transform = `rotate(${rot}deg)`;
     
     note.innerHTML = `
@@ -689,32 +933,25 @@
     memoWall.appendChild(note);
   }
 
-  // 添加新便签
   function addMemo() {
     const text = memoText.value.trim();
     if (!text) return alert("写点东西再贴嘛~ TvT");
 
     const date = new Date().toLocaleDateString();
-    const rot = Math.random() * 6 - 3; // 随机旋转角度 -3到3度
+    const rot = Math.random() * 6 - 3;
 
-    // 1. 创建DOM
     createMemoElement(text, selectedColor, date, rot);
 
-    // 2. 保存到LocalStorage
     const savedMemos = JSON.parse(localStorage.getItem('uriyas_memos') || '[]');
     savedMemos.push({ text, color: selectedColor, date, rot });
     localStorage.setItem('uriyas_memos', JSON.stringify(savedMemos));
 
-    // 3. 清空输入
     memoText.value = '';
-    
-    // 4. 滚动到底部
     memoWall.scrollTop = memoWall.scrollHeight;
   }
 
   addBtn.addEventListener('click', addMemo);
   
-  // 支持回车发送
   memoText.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -722,10 +959,12 @@
     }
   });
 
-  // 初始化加载
-  loadMemos();
+  // ************ 便签初始化逻辑：清除缓存并加载 ************
+  localStorage.removeItem('uriyas_memos'); 
+  // ******************************************************
 
-  // 5. 密码保护逻辑 (保留原版)
+
+  // 5. 密码保护逻辑
   const protectedLink = document.getElementById('protected-link');
   const modal = document.getElementById('password-modal');
   const closeBtn = document.getElementById('close-password');
@@ -733,8 +972,11 @@
   const passInput = document.getElementById('password-input');
   const errMsg = document.getElementById('error-message');
 
+  // **修复 Bug:** 确保点击链接时才激活弹窗
   protectedLink.addEventListener('click', (e) => {
     e.preventDefault();
+    errMsg.textContent = ""; // 清空错误信息
+    passInput.value = ""; // 清空输入
     modal.classList.add('active');
   });
 
@@ -749,6 +991,137 @@
     }
   });
 
+  // 6. 互动问答逻辑 (Quiz)
+  const quizData = [
+    {
+        question: "沾沾的MBTI人格是？",
+        options: ["INFP", "ENTP", "ESFJ", "ISTP"],
+        correct: 1, // ENTP (2nd option)
+        hint: "提示：是一个外向、直觉、思考、感知型的人格。"
+    },
+    {
+        question: "在Skillset中，沾沾在哪一领域特别提到“三渲二”？",
+        options: ["摄影", "网页", "策划", "设计"],
+        correct: 3, // 设计 (4th option)
+        hint: "提示：这与他主要的工作方向有关。"
+    },
+    {
+        question: "沾沾的个人作品库的暗号是？",
+        options: ["0802uriyanikos", "nikos0802", "uriyanikos0802", "0802nikos"],
+        correct: 2, // uriyanikos0802 (3rd option)
+        hint: "提示：生日数字 + 英文名，中间没有符号。"
+    },
+    {
+        question: "Timeline中，沾沾创办0ATM工作室是在哪个时期？",
+        options: ["高中时期", "转专业时期", "大三树莓季", "现在"],
+        correct: 0, // 高中时期 (1st option)
+        hint: "提示：在他进入大学之前。"
+    },
+    {
+        question: "沾沾最近在折腾的项目是？",
+        options: ["全新的博客系统", "RPGMaker & 红线变奏系列", "学习Python爬虫", "重温旧番"],
+        correct: 1, // RPGMaker & 红线变奏系列 (2nd option)
+        hint: "提示：与设计和游戏制作相关。"
+    }
+  ];
+
+  let currentScore = 0;
+  let currentQuestionIndex = 0;
+  const quizArea = document.getElementById('quiz-area');
+
+  function renderQuiz() {
+    if (currentQuestionIndex >= quizData.length) {
+      quizArea.innerHTML = `<h3 style="color: var(--secondary); text-align: center;">测验结束！🎉</h3><div class="quiz-score" style="text-align: center;">总得分：${currentScore} / ${quizData.length}</div>`;
+      return;
+    }
+
+    const qData = quizData[currentQuestionIndex];
+    let html = `<div class="quiz-q">Q${currentQuestionIndex + 1}: ${qData.question}</div>`;
+    html += '<form id="quiz-form">';
+
+    qData.options.forEach((option, index) => {
+      // 移除 'disabled' 属性，允许用户选中
+      html += `
+        <label class="quiz-option" data-index="${index}">
+          <input type="radio" name="question" value="${index}">
+          <span>${option}</span>
+        </label>
+      `;
+    });
+    
+    html += `</form><div id="result-message" class="quiz-result" style="display:none;"></div>`;
+    html += `<button class="btn-main" id="submit-quiz" style="margin-top: 20px;">提交答案</button>`;
+    html += `<div class="quiz-score">得分: ${currentScore} / ${quizData.length}</div>`;
+
+    quizArea.innerHTML = html;
+    
+    // **修复: 确保点击选项也能选中对应的 radio 按钮**
+    document.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.addEventListener('click', function() {
+            this.querySelector('input[type="radio"]').checked = true;
+        });
+    });
+
+    // 为提交按钮添加新的事件监听器
+    document.getElementById('submit-quiz').addEventListener('click', checkAnswer);
+  }
+
+  function checkAnswer() {
+    const form = document.getElementById('quiz-form');
+    const selected = form.querySelector('input[name="question"]:checked');
+    const resultMessage = document.getElementById('result-message');
+    const submitBtn = document.getElementById('submit-quiz');
+
+    if (!selected) {
+      resultMessage.style.display = 'block';
+      resultMessage.className = 'quiz-result result-wrong';
+      resultMessage.textContent = "请选择一个选项！";
+      return;
+    }
+
+    const selectedIndex = parseInt(selected.value);
+    const qData = quizData[currentQuestionIndex];
+    
+    // 禁用所有选项的点击，防止作弊或多次提交
+    document.querySelectorAll('.quiz-option input').forEach(input => input.disabled = true);
+
+
+    // 标记所有选项，显示正确答案
+    document.querySelectorAll('.quiz-option').forEach(opt => {
+        const index = parseInt(opt.getAttribute('data-index'));
+        if (index === qData.correct) {
+            opt.style.border = '2px solid #28a745';
+        }
+    });
+
+    if (selectedIndex === qData.correct) {
+      currentScore++;
+      resultMessage.className = 'quiz-result result-correct';
+      resultMessage.textContent = "✅ 太棒了！回答正确。";
+    } else {
+      resultMessage.className = 'quiz-result result-wrong';
+      resultMessage.textContent = `❌ 回答错误！正确答案是：${qData.options[qData.correct]}。${qData.hint}`;
+    }
+    resultMessage.style.display = 'block';
+
+    // **修复: 延迟后加载下一题或结束**
+    submitBtn.textContent = "下一题 >>";
+    submitBtn.removeEventListener('click', checkAnswer); // 移除旧的 checkAnswer 事件
+    submitBtn.disabled = false; // 重新启用按钮，用于下一题
+
+    // 绑定新的事件，加载下一题
+    submitBtn.addEventListener('click', () => {
+        currentQuestionIndex++;
+        renderQuiz();
+    });
+  }
+
+  // 初始化所有交互组件
+  // ************ 必须放在最后以确保所有DOM元素都已加载 ************
+  window.onload = function() {
+    renderQuiz();
+  }
+  
 </script>
 </body>
 </html>
