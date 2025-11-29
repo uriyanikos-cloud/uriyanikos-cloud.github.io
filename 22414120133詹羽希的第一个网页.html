@@ -21,7 +21,7 @@
     --card-radius: 16px;
     --transition: cubic-bezier(0.25, 0.8, 0.25, 1);
 
-    /* 新增的渐变色变量 (高级配色) */
+    /* 更新的渐变色变量 (高级配色) - 保持纯色不变，替换渐变色 */
     --grad-1: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); /* 清新蓝 */
     --grad-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); /* 绯红紫 */
     --grad-3: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 深海紫 */
@@ -109,12 +109,13 @@
   .section {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 100px 20px 40px;
+    padding: 120px 20px 60px; /* 增大垂直间距 */
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s ease;
   }
   .section.visible { opacity: 1; transform: translateY(0); }
+  #welcome { padding-top: 0; padding-bottom: 40px;} /* 首屏间距修正 */
 
   h2.section-title {
     font-size: 2.5rem;
@@ -165,7 +166,6 @@
     justify-content: center;
     text-align: center;
     position: relative;
-    padding-top: 0;
   }
 
   .hero-content h1 {
@@ -406,8 +406,7 @@
   }
   .quiz-option input[type="radio"] {
     margin-right: 10px;
-    /* 移除原来的 pointer-events: none; 让点击 radio 按钮也能触发 */
-    flex-shrink: 0; /* 防止 radio 按钮被挤压 */
+    flex-shrink: 0; 
   }
   .quiz-option span {
     display: block;
@@ -427,6 +426,23 @@
     color: var(--secondary);
     margin-top: 30px;
     text-align: right;
+  }
+  /* 问答页面的按钮样式 */
+  #quiz-area .btn-main {
+      padding: 10px 20px;
+      font-size: 1rem;
+  }
+  #quiz-area .btn-main.restart-btn {
+      background: none;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      box-shadow: none;
+      margin-left: 10px;
+  }
+  #quiz-area .btn-main.restart-btn:hover {
+      background: rgba(0, 242, 234, 0.1);
+      box-shadow: 0 0 15px rgba(0, 242, 234, 0.5);
+      transform: scale(1.02);
   }
 
 
@@ -540,15 +556,15 @@
   .contact-links {
     display: flex;
     flex-direction: column; /* 竖直排列 */
-    gap: 30px;
+    gap: 50px; /* 增大间距 */
     margin-top: 30px;
-    max-width: 800px; /* 限制宽度，使内容更集中 */
+    max-width: 800px; 
     margin-left: auto;
     margin-right: auto;
   }
   .contact-item {
     display: flex;
-    align-items: center; /* 垂直居中对齐 */
+    align-items: center; 
     width: 100%;
     gap: 20px;
   }
@@ -559,18 +575,19 @@
     padding: 15px 30px;
     border: 1px solid var(--glass-border);
     border-radius: 12px;
-    transition: 0.3s;
+    transition: 0.3s var(--transition); /* 使用过渡变量 */
     display: block;
-    min-width: 200px; /* 固定按钮宽度 */
+    min-width: 200px; 
     text-align: center;
-    flex-shrink: 0; /* 不允许被压缩 */
+    flex-shrink: 0; 
   }
   .contact-item a:hover {
     background: var(--glass-hover);
     color: white;
-    box-shadow: 0 0 15px var(--secondary);
+    box-shadow: 0 10px 20px rgba(255, 126, 179, 0.4); /* 增加阴影和上浮效果 */
+    transform: translateY(-3px);
   }
-  /* 新增：右侧描述容器的毛玻璃效果 */
+  /* 新增：右侧描述容器的毛玻璃效果和动效 */
   .contact-desc-box {
     flex-grow: 1;
     background: var(--glass);
@@ -581,6 +598,12 @@
     color: var(--text-muted);
     font-size: 0.9rem;
     line-height: 1.5;
+    transition: 0.3s var(--transition); /* 添加过渡 */
+  }
+  .contact-item:hover .contact-desc-box {
+    border-color: rgba(255, 126, 179, 0.5); /* 悬停时边框变色 */
+    background: var(--glass-hover);
+    box-shadow: 0 0 15px rgba(255, 126, 179, 0.3);
   }
   .contact-desc {
     margin: 0;
@@ -612,7 +635,7 @@
     .contact-desc-box { width: 100%; }
   }
 
-  /* 密码弹窗样式: 确保初始隐藏 */
+  /* 弹窗通用样式 */
   .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.8); z-index: 10000;
@@ -623,6 +646,47 @@
   .modal-content {
     background: #1e1b2e; padding: 30px; border-radius: 15px; border: 1px solid var(--primary);
     text-align: center; width: 90%; max-width: 400px;
+    /* 弹出动画的初始状态 */
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  /* 弹出动画的激活状态 */
+  .modal-overlay.active .modal-content {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+  }
+
+  /* 邮件弹窗的特殊 UI 样式 */
+  #email-modal .modal-content {
+      border: 1px solid var(--secondary);
+      background: linear-gradient(135deg, rgba(30, 27, 46, 0.9), rgba(15, 12, 25, 0.9));
+      backdrop-filter: blur(15px);
+  }
+  #email-modal .email-address {
+      font-size: 1.5rem;
+      font-weight: bold;
+      /* 白紫渐变色 */
+      background: linear-gradient(to right, #fff, var(--primary-glow)); 
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      /* 邮箱地址背景和边距 */
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      word-break: break-all;
+      display: inline-block;
+  }
+  /* 好的，已记下 按钮优化 */
+  #email-modal .btn-main {
+      padding: 10px 25px; 
+      font-size: 1rem;
+      background: var(--secondary); /* 采用主题粉色 */
+      box-shadow: 0 5px 15px rgba(255, 126, 179, 0.4);
+  }
+  #email-modal .btn-main:hover {
+      transform: scale(1.02);
   }
 </style>
 </head>
@@ -689,36 +753,36 @@
   
   <div class="grid-2">
     <div>
-      <h3 style="margin-bottom: 20px;">Skillset (点击翻转查看)</h3>
+      <h3 style="margin-bottom: 20px;">Skillset</h3>
       <div class="skill-grid">
         <div class="skill-container">
           <div class="skill-box" onclick="this.classList.toggle('flipped')">
             <div class="skill-front"><span class="skill-icon">🎨</span>设计</div>
-            <div class="skill-back">熟练PS/AI/C4D/Blender等，专注于视觉传达、三渲二。</div>
+            <div class="skill-back">熟练掌握PS/AI等设计软件，最近在学习TD交互。</div>
           </div>
         </div>
         <div class="skill-container">
           <div class="skill-box" onclick="this.classList.toggle('flipped')">
             <div class="skill-front"><span class="skill-icon">📸</span>摄影</div>
-            <div class="skill-back">主要拍摄Cosplay和静物。爱好后期调色，拥有一定的审美。</div>
+            <div class="skill-back">摄影爱好者，最近斥巨资购入了A7C2（吃土中）。拥有一定的审美。</div>
           </div>
         </div>
         <div class="skill-container">
           <div class="skill-box" onclick="this.classList.toggle('flipped')">
             <div class="skill-front"><span class="skill-icon">💻</span>网页</div>
-            <div class="skill-back">能手搓静态网页，熟悉HTML/CSS/JS基础，热衷于前端美化。</div>
+            <div class="skill-back">熟悉HTML/CSS/JS基础，热衷于前端美化。</div>
           </div>
         </div>
         <div class="skill-container">
           <div class="skill-box" onclick="this.classList.toggle('flipped')">
             <div class="skill-front"><span class="skill-icon">🎞️</span>后期</div>
-            <div class="skill-back">PR/AE基础，能进行简单的视频剪辑和特效制作。</div>
+            <div class="skill-back">她就是人像后期，调色，特效什么都来呀。</div>
           </div>
         </div>
         <div class="skill-container">
           <div class="skill-box" onclick="this.classList.toggle('flipped')">
             <div class="skill-front"><span class="skill-icon">🗣️</span>辩论</div>
-            <div class="skill-back">校队成员，擅长立论、攻辩。在逻辑和表达上有训练。</div>
+            <div class="skill-back">曾经代表湖南工业大学带队参加湖南省高校大学生辩论联赛，该届赛事的湖南工业大学最佳辩手积分榜第一。</div>
           </div>
         </div>
         <div class="skill-container">
@@ -746,7 +810,7 @@
         <div class="timeline-item">
           <span class="timeline-date">高中时期</span>
           <strong>FancyFree英语协会主席，创办了0ATM工作室</strong>
-          <p style="font-size: 0.9rem; color: #aaa;">时常怀念之</p>
+          <p style="font-size: 0.9rem; color: #aaa;">作为会长举办超过200+人的大型活动，协办过N场活动，负责策划，摄影，设计等</p>
         </div>
       </div>
     </div>
@@ -757,7 +821,7 @@
   <h2 class="section-title">03. 百宝箱 Gallery</h2>
   <div class="glass-card" style="text-align: center; padding: 50px;">
     <h3 style="font-size: 2rem; margin-bottom: 10px;">🔒 个人作品库</h3>
-    <p>收录了我的设计稿、摄影成片以及一些不想公开的碎碎念。</p>
+    <p>收录了我的设计稿、摄影成片以及一些无厘头的碎碎念。</p>
     <br>
     <a href="#" id="protected-link" class="btn-main" style="background: transparent; border: 1px solid var(--primary);">
       输入暗号查看 🔑
@@ -767,7 +831,7 @@
 
 <div class="section" id="playground">
   <h2 class="section-title">04. 谁会拒绝突如其来的一把游戏呢</h2>
-  <p>来玩把沙子版俄罗斯方块吧！(没有广告费版)</p>
+  <p>来玩把沙子版俄罗斯方块吧！(没有广告费版)(好玩爱玩)</p>
   
   <div class="game-wrapper">
     <div class="game-overlay" id="game-overlay">
@@ -778,7 +842,7 @@
     <div id="iframe-container" style="width:100%; height:100%;"></div>
   </div>
 
-  <h3 style="margin-top: 50px; margin-bottom: 30px; color: var(--accent);">🎮 沾沾小知识测验</h3>
+  <h3 style="margin-top: 50px; margin-bottom: 30px; color: var(--accent);">🎮 关于沾沾</h3>
   <div id="quiz-area">
     </div>
 </div>
@@ -794,7 +858,7 @@
                 <span style="font-size: 1.5em; vertical-align: middle;">💬</span> 微信公众号
             </a>
             <div class="contact-desc-box">
-              <p class="contact-desc">分享长篇思考、设计教程、深度杂谈，内容相对严肃。</p>
+              <p class="contact-desc">分享长篇思考、设计灵感、深度杂谈，以及推文存档捏，欢迎来公众号找我互动！！</p>
             </div>
         </div>
         <div class="contact-item">
@@ -802,15 +866,15 @@
                 <span style="font-size: 1.5em; vertical-align: middle;">❓</span> 提问箱
             </a>
             <div class="contact-desc-box">
-              <p class="contact-desc">想匿名交流或随手问个问题？最方便的渠道！</p>
+              <p class="contact-desc">想匿名交流或随手问个问题？提问箱是最方便的渠道！有什么心事也可以偷偷告诉我哟QvQ</p>
             </div>
         </div>
         <div class="contact-item">
-            <a href="mailto:your.email@example.com" target="_blank">
-                <span style="font-size: 1.5em; vertical-align: middle;">📧</span> 邮件
+            <a href="#" id="email-link">
+                <span style="font-size: 1.5em; vertical-align: middle;">📧</span> 邮箱
             </a>
             <div class="contact-desc-box">
-              <p class="contact-desc">用于正式合作、约稿、或进行长邮件讨论的严肃途径。</p>
+              <p class="contact-desc">用于正式合作、约稿、或进行长邮件讨论的途径，欢迎一切！</p>
             </div>
         </div>
     </div>
@@ -818,7 +882,7 @@
 
 <div class="section" id="interactive">
   <h2 class="section-title">06. 留下你的碎片</h2>
-  <p>在沾的百宝箱里贴一张便签吧，随便说什么都行。<br><span style="font-size:0.8rem; opacity:0.6;">(注：你的便签会保存在你的浏览器缓存里，刷新不会消失哦，但也只有你能看见，就像写给自己的秘密~✨)</span></p>
+  <p>在沾的百宝箱里贴一张便签吧，随便说什么都行。<br><span style="font-size:0.8rem; opacity:0.6;">(注：你的便签会保存沾沾的空间里，刷新也不会消失哦~✨)</span></p>
 
   <div class="memo-section">
     <div class="memo-controls">
@@ -861,10 +925,19 @@
   <div class="modal-content">
     <h3 style="color: var(--primary);">🔐 安全检查</h3>
     <p>请输入神秘代码：</p>
-    <input type="password" id="password-input" style="width: 100%; padding: 10px; border-radius: 5px; border: none; margin: 15px 0;" placeholder="Password">
+    <input type="password" id="password-input" style="width: 100%; padding: 10px; border-radius: 5px; border: none; margin: 15px 0; background: rgba(255,255,255,0.1); color: white;" placeholder="Password">
     <button id="submit-password" class="btn-main" style="width: 100%;">确认</button>
     <button id="close-password" style="background:none; border:none; color:#aaa; margin-top:10px; cursor:pointer;">取消</button>
     <p id="error-message" style="color: #ff4757; font-size: 0.8rem; margin-top: 10px;"></p>
+  </div>
+</div>
+
+<div id="email-modal" class="modal-overlay">
+  <div class="modal-content">
+    <h3 style="color: var(--secondary);">📧 邮件联络</h3>
+    <p>沾的邮箱是：</p>
+    <div class="email-address">3261752842@qq.com</div>
+    <button id="close-email" class="btn-main">好的，已记下</button>
   </div>
 </div>
 
@@ -919,6 +992,7 @@
   function createMemoElement(text, color, date, rot) {
     const note = document.createElement('div');
     note.className = 'sticky-note';
+    // 检查颜色是否为 CSS 变量（渐变色），并直接应用
     if (color.startsWith('var(') && color.includes('grad')) {
         note.style.background = color;
     } else {
@@ -931,6 +1005,11 @@
       <div class="note-date">${date}</div>
     `;
     memoWall.appendChild(note);
+  }
+
+  function loadMemos() {
+    const savedMemos = JSON.parse(localStorage.getItem('uriyas_memos') || '[]');
+    savedMemos.forEach(memo => createMemoElement(memo.text, memo.color, memo.date, memo.rot));
   }
 
   function addMemo() {
@@ -959,8 +1038,11 @@
     }
   });
 
-  // ************ 便签初始化逻辑：清除缓存并加载 ************
-  localStorage.removeItem('uriyas_memos'); 
+  // ************ 便签初始化逻辑 ************
+  // **注意: 为了保持用户数据，我移除了 localStorage.removeItem('uriyas_memos');
+  // 如果您希望每次打开都清空，请取消注释下一行。
+  // localStorage.removeItem('uriyas_memos');
+  loadMemos();
   // ******************************************************
 
 
@@ -972,11 +1054,10 @@
   const passInput = document.getElementById('password-input');
   const errMsg = document.getElementById('error-message');
 
-  // **修复 Bug:** 确保点击链接时才激活弹窗
   protectedLink.addEventListener('click', (e) => {
     e.preventDefault();
-    errMsg.textContent = ""; // 清空错误信息
-    passInput.value = ""; // 清空输入
+    errMsg.textContent = ""; 
+    passInput.value = ""; 
     modal.classList.add('active');
   });
 
@@ -991,37 +1072,49 @@
     }
   });
 
-  // 6. 互动问答逻辑 (Quiz)
+  // 6. 邮件弹窗逻辑 (新增)
+  const emailLink = document.getElementById('email-link');
+  const emailModal = document.getElementById('email-modal');
+  const closeEmailBtn = document.getElementById('close-email');
+
+  emailLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      emailModal.classList.add('active');
+  });
+
+  closeEmailBtn.addEventListener('click', () => emailModal.classList.remove('active'));
+
+  // 7. 互动问答逻辑 (Quiz) - 优化重做逻辑
   const quizData = [
     {
-        question: "沾沾的MBTI人格是？",
+        question: "沾沾的MBTI是？",
         options: ["INFP", "ENTP", "ESFJ", "ISTP"],
-        correct: 1, // ENTP (2nd option)
+        correct: 1, 
         hint: "提示：是一个外向、直觉、思考、感知型的人格。"
     },
     {
-        question: "在Skillset中，沾沾在哪一领域特别提到“三渲二”？",
-        options: ["摄影", "网页", "策划", "设计"],
-        correct: 3, // 设计 (4th option)
-        hint: "提示：这与他主要的工作方向有关。"
+        question: "以下哪个是沾的本命推”？",
+        options: ["天宫律舞", "进藤光", "亚斯特", "御影玲王"],
+        correct: 3, 
+        hint: "提示：印象色是紫色哟。"
     },
     {
-        question: "沾沾的个人作品库的暗号是？",
-        options: ["0802uriyanikos", "nikos0802", "uriyanikos0802", "0802nikos"],
-        correct: 2, // uriyanikos0802 (3rd option)
-        hint: "提示：生日数字 + 英文名，中间没有符号。"
+        question: "沾沾的星座是？",
+        options: ["双鱼座", "天秤座", "狮子座", "天蝎座"],
+        correct: 2, 
+        hint: "提示：火象的沾。"
     },
     {
-        question: "Timeline中，沾沾创办0ATM工作室是在哪个时期？",
-        options: ["高中时期", "转专业时期", "大三树莓季", "现在"],
-        correct: 0, // 高中时期 (1st option)
-        hint: "提示：在他进入大学之前。"
+        question: "在神农城华人街沾最喜欢去以下哪里吃饭？",
+        options: ["椰先森椰子鸡", "大牛牛肉火锅", "岭南小生", "泰喜欢泰料"],
+        correct: 0, 
+        hint: "提示：朋友圈出现频率超高。"
     },
     {
         question: "沾沾最近在折腾的项目是？",
-        options: ["全新的博客系统", "RPGMaker & 红线变奏系列", "学习Python爬虫", "重温旧番"],
-        correct: 1, // RPGMaker & 红线变奏系列 (2nd option)
-        hint: "提示：与设计和游戏制作相关。"
+        options: ["全新的博客系统", "红线变奏系列", "Unity & C#", "手势识别游戏"],
+        correct: 1, 
+        hint: "提示：和版式设计课设相关。"
     }
   ];
 
@@ -1031,7 +1124,14 @@
 
   function renderQuiz() {
     if (currentQuestionIndex >= quizData.length) {
-      quizArea.innerHTML = `<h3 style="color: var(--secondary); text-align: center;">测验结束！🎉</h3><div class="quiz-score" style="text-align: center;">总得分：${currentScore} / ${quizData.length}</div>`;
+      // 问答结束页面，包含重新开始按钮
+      quizArea.innerHTML = `
+        <h3 style="color: var(--secondary); text-align: center;">测验结束！🎉</h3>
+        <div class="quiz-score" style="text-align: center;">总得分：${currentScore} / ${quizData.length}</div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn-main restart-btn" onclick="resetQuiz()">再做一次</button>
+        </div>
+      `;
       return;
     }
 
@@ -1040,7 +1140,6 @@
     html += '<form id="quiz-form">';
 
     qData.options.forEach((option, index) => {
-      // 移除 'disabled' 属性，允许用户选中
       html += `
         <label class="quiz-option" data-index="${index}">
           <input type="radio" name="question" value="${index}">
@@ -1055,14 +1154,12 @@
 
     quizArea.innerHTML = html;
     
-    // **修复: 确保点击选项也能选中对应的 radio 按钮**
     document.querySelectorAll('.quiz-option').forEach(opt => {
         opt.addEventListener('click', function() {
             this.querySelector('input[type="radio"]').checked = true;
         });
     });
 
-    // 为提交按钮添加新的事件监听器
     document.getElementById('submit-quiz').addEventListener('click', checkAnswer);
   }
 
@@ -1082,10 +1179,9 @@
     const selectedIndex = parseInt(selected.value);
     const qData = quizData[currentQuestionIndex];
     
-    // 禁用所有选项的点击，防止作弊或多次提交
+    // 禁用所有选项的点击
     document.querySelectorAll('.quiz-option input').forEach(input => input.disabled = true);
-
-
+    
     // 标记所有选项，显示正确答案
     document.querySelectorAll('.quiz-option').forEach(opt => {
         const index = parseInt(opt.getAttribute('data-index'));
@@ -1097,27 +1193,30 @@
     if (selectedIndex === qData.correct) {
       currentScore++;
       resultMessage.className = 'quiz-result result-correct';
-      resultMessage.textContent = "✅ 太棒了！回答正确。";
+      resultMessage.textContent = "✅ Yep！你很懂我嘛";
     } else {
       resultMessage.className = 'quiz-result result-wrong';
-      resultMessage.textContent = `❌ 回答错误！正确答案是：${qData.options[qData.correct]}。${qData.hint}`;
+      resultMessage.textContent = `❌ NONO！正解是：${qData.options[qData.correct]}。${qData.hint}`;
     }
     resultMessage.style.display = 'block';
 
-    // **修复: 延迟后加载下一题或结束**
+    // 延迟后加载下一题
     submitBtn.textContent = "下一题 >>";
-    submitBtn.removeEventListener('click', checkAnswer); // 移除旧的 checkAnswer 事件
-    submitBtn.disabled = false; // 重新启用按钮，用于下一题
+    submitBtn.removeEventListener('click', checkAnswer); 
 
-    // 绑定新的事件，加载下一题
     submitBtn.addEventListener('click', () => {
         currentQuestionIndex++;
         renderQuiz();
     });
   }
 
+  function resetQuiz() {
+      currentScore = 0;
+      currentQuestionIndex = 0;
+      renderQuiz();
+  }
+
   // 初始化所有交互组件
-  // ************ 必须放在最后以确保所有DOM元素都已加载 ************
   window.onload = function() {
     renderQuiz();
   }
