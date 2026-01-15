@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>情绪之线 | RED THREADS VARIATIONS</title>
+    <style>
+        body {
+            margin: 0;
+            background: #050505;
+            color: #d1d1d1;
+            font-family: "Source Han Serif CN", serif;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 10;
+            padding: 10vh 10vw;
+            pointer-events: none;
+        }
+
+        .chapter-title {
+            font-size: 0.8rem;
+            letter-spacing: 0.5rem;
+            color: #b02a2a;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin: 0;
+            letter-spacing: 0.2rem;
+        }
+
+        .description {
+            max-width: 300px;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            margin-top: 2rem;
+            opacity: 0.6;
+        }
+
+        /* 底部导航 */
+        .nav-bottom {
+            position: fixed;
+            bottom: 5vh;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+        }
+
+        .nav-bottom a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 0.2rem;
+            margin: 0 20px;
+            transition: 0.4s;
+            pointer-events: auto;
+        }
+
+        .nav-bottom a:hover {
+            color: #b02a2a;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container">
+        <canvas id="emotionCanvas"></canvas>
+    </div>
+
+    <div class="content-layer">
+        <div class="chapter-title">CHAPTER I</div>
+        <h2>情绪之线</h2>
+        <div class="description">
+            红线以团块、雨与桥的形态出现。<br>
+            它是压迫，亦是承载。<br>
+            在被动中感知情绪的重量。
+        </div>
+    </div>
+
+    <nav class="nav-bottom">
+        <a href="index.html">返回起点</a>
+        <a href="becoming.html">前往：成为之线</a>
+    </nav>
+
+    <script>
+        const canvas = document.getElementById('emotionCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let strands = [];
+
+        class Strand {
+            constructor(x) {
+                this.x = x;
+                this.segments = 20;
+                this.points = [];
+                this.spacing = 0; // 将在resize中初始化
+                this.mouseInfluence = 0;
+                this.init();
+            }
+
+            init() {
+                this.points = [];
+                this.spacing = height / this.segments;
+                for (let i = 0; i <= this.segments; i++) {
+                    this.points.push({ x: this.x, y: i * this.spacing, ox: this.x });
+                }
+            }
+
+            update(mouse) {
+                this.points.forEach((p, i) => {
+                    // 只有中间部分的线受鼠标影响，顶部固定
+                    if (i > 0) {
+                        const dx = mouse.x - p.x;
+                        const dy = mouse.y - p.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (dist < 150) {
+                            const angle = Math.atan2(dy, dx);
+                            const force = (150 - dist) / 150;
+                            // 线条被鼠标向两边推开
+                            p.x -= Math.cos(angle) * force * 15;
+                        }
+
+                        // 弹性恢复
+                        p.x += (p.ox - p.x) * 0.05;
+                        
+                        // 微弱的左右摆动（情绪的波动）
+                        p.x += Math.sin(Date.now() * 0.001 + this.x + i) * 0.5;
+                    }
+                });
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.points[0].x, this.points[0].y);
+                for (let i = 1; i < this.points.length; i++) {
+                    const xc = (this.points[i].x + this.points[i - 1].x) / 2;
+                    const yc = (this.points[i].y + this.points[i - 1].y) / 2;
+                    ctx.quadraticCurveTo(this.points[i - 1].x, this.points[i - 1].y, xc, yc);
+                }
+                ctx.strokeStyle = 'rgba(176, 42, 42, 0.4)';
+                ctx.lineWidth = Math.random() < 0.1 ? 2 : 0.8; // 随机粗线增加质感
+                ctx.stroke();
+            }
+        }
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            strands = [];
+            const density = 40; // 线条密度
+            for (let i = 0; i < width; i += density) {
+                strands.push(new Strand(i));
+            }
+        }
+
+        const mouse = { x: -1000, y: -1000 };
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function animate() {
+            // 保持深色底色
+            ctx.fillStyle = '#050505';
+            ctx.fillRect(0, 0, width, height);
+
+            // 绘制背景噪点（纹理）
+            for (let i = 0; i < 100; i++) {
+                ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.02})`;
+                ctx.fillRect(Math.random() * width, Math.random() * height, 1, 1);
+            }
+
+            strands.forEach(s => {
+                s.update(mouse);
+                s.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        animate();
+    </script>
+</body>
+</html>
